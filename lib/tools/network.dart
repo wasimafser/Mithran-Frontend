@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:mithran/tools/local_data.dart';
 
 var TOKEN;
+var ADMIN_TOKEN = "f31699f278390e23780ea10777fa4454ad11e9bc";
 
 set_token_instance(token){
   TOKEN = token;
@@ -39,12 +40,16 @@ class NetworkUtil {
     });
   }
 
-  Future<dynamic> post(String url, var body, {Map headers, encoding}) {
+  Future<dynamic> post(String url, var body, {Map headers, encoding, require_admin=false}) {
     var headers = {
       "Content-Type": "application/json",
     };
     if (TOKEN != null){
-      headers['Authorization'] = "Token $TOKEN";
+      if (require_admin == true){
+        headers['Authorization'] = "Token $ADMIN_TOKEN";
+      }else{
+        headers['Authorization'] = "Token $TOKEN";
+      }
     }
 
     return http.post(

@@ -15,6 +15,18 @@ class API {
           'password': password
         })
     );
+  }
 
+  signup(email, first_name, last_name, password) async{
+    return await network_util.post(
+        "$base_url/user_management/user/",
+        jsonEncode({
+          'email': email,
+          'first_name': first_name,
+          'last_name': last_name,
+          'password': password
+        }),
+      require_admin: true,
+    );
   }
 }

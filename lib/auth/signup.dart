@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:mithran/tools/api.dart';
 import 'package:mithran/tools/local_data.dart';
-import 'package:mithran/tools/network.dart';
 import 'package:mithran/tools/screen_size.dart';
 import 'package:mithran/user.dart';
-// import 'package:flutter/widgets.dart';
 
-class LoginPage extends StatefulWidget{
+class SignUpPage extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
-    return LoginState();
+    return _SignUpPageState();
   }
+
 }
 
-class LoginState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage>{
   API api = API();
-  final _loginKey = GlobalKey<FormState>();
-  String email, password;
+  final _signUpKey = GlobalKey<FormState>();
+  String email, first_name, last_name, password, confirm_password;
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +23,10 @@ class LoginState extends State<LoginPage> {
       padding: ScreenSize.isSmallScreen(context) ? EdgeInsets.only(left: 10, right: 10) : EdgeInsets.only(left: 50, right: 50),
       alignment: Alignment.center,
       child: Form(
-        key: _loginKey,
+        key: _signUpKey,
         child: Wrap(
           direction: Axis.vertical,
-          alignment: WrapAlignment.spaceBetween,
+          alignment: WrapAlignment.center,
           crossAxisAlignment: WrapCrossAlignment.center,
           spacing: 10,
           children: [
@@ -46,7 +45,35 @@ class LoginState extends State<LoginPage> {
                 validator: (value) => value.isEmpty ? 'Username cannot be blank' : null,
               ),
             ),
-            // SizedBox(height: 10),
+            SizedBox(
+              width: ScreenSize.isSmallScreen(context) ? ScreenSize.getScreenWidth(context)/2.5 : ScreenSize.getScreenWidth(context)/5,
+              child: TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'First Name',
+                  filled: true,
+                ),
+                onChanged: (value){
+                  setState(() {
+                    this.first_name = value;
+                  });
+                },
+                validator: (value) => value.isEmpty ? 'First Name is required' : null,
+              ),
+            ),
+            SizedBox(
+              width: ScreenSize.isSmallScreen(context) ? ScreenSize.getScreenWidth(context)/2.5 : ScreenSize.getScreenWidth(context)/5,
+              child: TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Last Name',
+                  filled: true,
+                ),
+                onChanged: (value){
+                  setState(() {
+                    this.last_name = value;
+                  });
+                },
+              ),
+            ),
             SizedBox(
               width: ScreenSize.isSmallScreen(context) ? ScreenSize.getScreenWidth(context)/2.5 : ScreenSize.getScreenWidth(context)/5,
               child: TextFormField(
@@ -63,14 +90,13 @@ class LoginState extends State<LoginPage> {
                 validator: (value) => value.isEmpty ? 'Password cannot be blank' : null,
               ),
             ),
-            // SizedBox(height: 10),
             ElevatedButton(
               onPressed: () => {
-                if (_loginKey.currentState.validate()){
-                  this.login()
+                if (_signUpKey.currentState.validate()){
+                  this.signup()
                 }
               },
-              child: Text("LOGIN"),
+              child: Text("SUBMIT"),
             )
           ],
         ),
@@ -78,15 +104,14 @@ class LoginState extends State<LoginPage> {
     );
   }
 
-  login() async{
-    Map response = await api.login(this.email, this.password);
+  signup() async{
+    Map response = await api.signup(this.email, this.first_name, this.last_name, this.password);
     if (response.keys.contains('error')){
       print("ERROR");
     }else{
-      set_token(response['token']);
-      User.set_user_instance(response['user']);
+      User.set_user_instance(response);
       LocalData local_data = LocalData();
-      response['user'].forEach((key, value) {
+      response.forEach((key, value) {
         local_data.set_data(key, value);
       });
 

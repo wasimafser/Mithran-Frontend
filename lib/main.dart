@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:mithran/auth/auth.dart';
 import 'package:mithran/auth/login.dart';
 import 'package:mithran/screens/home_page.dart';
 import 'package:mithran/tools/local_data.dart';
@@ -37,8 +38,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      initialRoute: is_logged_in ? "/home" : "/login",
+      initialRoute: is_logged_in ? "/home" : "/auth",
       routes: {
+        "/auth": (context) => AuthPage(),
         "/login": (context) => LoginPage(),
         "/home": (context) => HomePage()
       },

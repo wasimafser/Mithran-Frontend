@@ -5,6 +5,10 @@ class ScreenSize {
     return MediaQuery.of(context).size.width;
   }
 
+  static double getScreenHeight(BuildContext context){
+    return MediaQuery.of(context).size.height;
+  }
+
   static bool isLargeScreen(BuildContext context){
     return MediaQuery.of(context).size.width > 1200;
   }
