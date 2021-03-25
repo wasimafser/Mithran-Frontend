@@ -27,4 +27,9 @@ class LocalData{
       return prefs.getDouble(key) ?? 0.0;
     }
   }
+
+  static clear_data() async{
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
 }

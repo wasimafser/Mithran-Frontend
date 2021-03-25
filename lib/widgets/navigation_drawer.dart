@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:mithran/tools/local_data.dart';
 import 'package:mithran/user.dart';
 
 class NavigationDrawer extends StatefulWidget{
@@ -42,6 +43,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             title: Text("New Service"),
             onTap: (){
               Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: Text("Logout"),
+            onTap: (){
+              LocalData.clear_data();
+              Navigator.popAndPushNamed(context, "/login");
             },
           )
         ],
