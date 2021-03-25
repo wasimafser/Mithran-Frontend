@@ -2,6 +2,7 @@
 //
 //     final user = userFromMap(jsonString);
 
+import 'dart:collection';
 import 'dart:convert';
 
 User user;
@@ -41,11 +42,16 @@ class User {
     "password": password == null ? null : password,
   };
 
-  static set_user_instance(Map data){
-    user = User.fromMap(data);
+  static set_user_instance(var data){
+    print(data.runtimeType);
+    if (data.runtimeType == String){
+      user = User.fromJson(data);
+    }else{
+      user = User.fromMap(data);
+    }
   }
 
-  static get_user_instance(Map data){
+  static get_user_instance(){
     return user;
   }
 }

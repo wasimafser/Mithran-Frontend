@@ -5,10 +5,14 @@ import 'package:mithran/tools/local_data.dart';
 
 var TOKEN;
 
+set_token_instance(token){
+  TOKEN = token;
+}
+
 set_token(token) {
   LocalData local_data = LocalData();
   local_data.set_data('token', token);
-  TOKEN = token;
+  set_token_instance(token);
 }
 
 class NetworkUtil {
