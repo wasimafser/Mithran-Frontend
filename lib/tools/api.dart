@@ -42,4 +42,17 @@ class API {
       data
     );
   }
+
+  get_service_types() async{
+    return await network_util.get(
+      "$base_url/service/type/"
+    );
+  }
+
+  post_service(data) async{
+    return await network_util.post(
+        "$base_url/service/api/",
+        data
+    );
+  }
 }
