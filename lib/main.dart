@@ -5,6 +5,7 @@ import 'package:mithran/auth/auth.dart';
 import 'package:mithran/auth/login.dart';
 import 'package:mithran/screens/home_page.dart';
 import 'package:mithran/screens/profile.dart';
+import 'package:mithran/screens/service/history.dart';
 import 'package:mithran/screens/service/request.dart';
 import 'package:mithran/tools/local_data.dart';
 import 'package:mithran/tools/network.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         "/home": (context) => HomePage(),
         "/profile": (context) => ProfilePage(),
         "/service/request": (context) => ServiceRequestPage(),
+        "/service/history": (context) => ServiceHistoryPage(),
       },
     );
   }

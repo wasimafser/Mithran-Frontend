@@ -49,10 +49,22 @@ class API {
     );
   }
 
+  get_service_status() async{
+    return await network_util.get(
+        "$base_url/service/status/"
+    );
+  }
+
   post_service(data) async{
     return await network_util.post(
         "$base_url/service/api/",
         data
+    );
+  }
+
+  get_services(consumer_id) async{
+    return await network_util.get(
+        "$base_url/service/filter/?requested_by=$consumer_id"
     );
   }
 }

@@ -117,7 +117,7 @@ class _ServiceRequestState extends State<ServiceRequestPage>{
     service.requestedBy = consumer.id;
     Map response = await API().post_service(service.toJson());
     if (response.containsKey("id")){
-      Navigator.popAndPushNamed(context, "/home");
+      Navigator.popAndPushNamed(context, "/service/history");
     }else{
       response.forEach((key, value) {
         ScaffoldMessenger.of(context).showSnackBar(

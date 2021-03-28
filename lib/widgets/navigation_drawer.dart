@@ -52,6 +52,12 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             },
           ),
           ListTile(
+            title: Text("Request History"),
+            onTap: (){
+              Navigator.popAndPushNamed(context, "/service/history");
+            },
+          ),
+          ListTile(
             title: Text("Profile"),
             onTap: (){
               Navigator.popAndPushNamed(context, "/profile");
