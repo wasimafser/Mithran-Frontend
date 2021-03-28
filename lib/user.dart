@@ -9,6 +9,7 @@ User user;
 
 class User {
   User({
+    this.id,
     this.firstName,
     this.lastName,
     this.fullName,
@@ -16,6 +17,7 @@ class User {
     this.password,
   });
 
+  int id;
   String firstName;
   dynamic lastName;
   String fullName;
@@ -27,6 +29,7 @@ class User {
   String toJson() => json.encode(toMap());
 
   factory User.fromMap(Map<String, dynamic> json) => User(
+    id: json["id"],
     firstName: json["first_name"] == null ? null : json["first_name"],
     lastName: json["last_name"],
     fullName: json["full_name"] == null ? null : json["full_name"],
@@ -35,6 +38,7 @@ class User {
   );
 
   Map<String, dynamic> toMap() => {
+    "id": id,
     "first_name": firstName == null ? null : firstName,
     "last_name": lastName,
     "full_name": fullName == null ? null : fullName,
@@ -43,7 +47,7 @@ class User {
   };
 
   static set_user_instance(var data){
-    print(data.runtimeType);
+    // print(data.runtimeType);
     if (data.runtimeType == String){
       user = User.fromJson(data);
     }else{

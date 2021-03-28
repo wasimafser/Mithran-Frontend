@@ -29,4 +29,17 @@ class API {
       require_admin: true,
     );
   }
+
+  get_consumer(user_id) async{
+    return await network_util.get(
+        "$base_url/user_management/consumer/?user_id=$user_id",
+    );
+  }
+  
+  put_consumer(data) async{
+    return await network_util.put(
+      "$base_url/user_management/consumer/",
+      data
+    );
+  }
 }

@@ -40,16 +40,28 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             ),
           ),
           ListTile(
-            title: Text("New Service"),
+            title: Text("Home"),
             onTap: (){
-              Navigator.pop(context);
+              Navigator.popAndPushNamed(context, "/home");
+            },
+          ),
+          ListTile(
+            title: Text("New Service Request"),
+            onTap: (){
+              Navigator.popAndPushNamed(context, "/service/request");
+            },
+          ),
+          ListTile(
+            title: Text("Profile"),
+            onTap: (){
+              Navigator.popAndPushNamed(context, "/profile");
             },
           ),
           ListTile(
             title: Text("Logout"),
             onTap: (){
               LocalData.clear_data();
-              Navigator.popAndPushNamed(context, "/login");
+              Navigator.popAndPushNamed(context, "/auth");
             },
           )
         ],
