@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:mithran/data/consumer.dart';
+import 'package:mithran/data/profile.dart';
 import 'package:mithran/tools/api.dart';
 import 'package:mithran/tools/screen_size.dart';
 import 'package:mithran/widgets/navigation_drawer.dart';
@@ -15,24 +14,24 @@ class ProfilePage extends StatefulWidget{
 
 class _ProfilePageState extends State<ProfilePage>{
   final _profileKey = GlobalKey<FormState>();
-  Consumer consumer;
+  Profile profile;
 
-  _get_consumer() async{
-    consumer = await Consumer.get_consumer_instance();
+  _get_profile() async{
+    profile = await Profile.get_profile_instance();
     setState(() {
-      consumer = consumer;
+      profile = profile;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _get_consumer();
+    _get_profile();
   }
 
   @override
   Widget build(BuildContext context) {
-    if(consumer != null){
+    if(profile != null){
       return Scaffold(
         appBar: AppBar(
           title: Text("Profile"),
@@ -48,11 +47,11 @@ class _ProfilePageState extends State<ProfilePage>{
               alignment: WrapAlignment.spaceEvenly,
               runAlignment: WrapAlignment.center,
               children: [
-                buildTextFormField(consumer.contactNumber, "Contact Number", required: true),
-                buildTextFormField(consumer.alternateContactNumber, "Alternate Contact Number"),
-                buildTextFormField(consumer.doorNumber, "Door Number / Floor", required: true),
-                buildTextFormField(consumer.address, "Address", required: true),
-                buildTextFormField(consumer.organization, "Organization Code", required: true),
+                buildTextFormField(profile.contactNumber, "Contact Number", required: true),
+                buildTextFormField(profile.alternateContactNumber, "Alternate Contact Number"),
+                buildTextFormField(profile.doorNumber, "Door Number / Floor", required: true),
+                buildTextFormField(profile.address, "Address", required: true),
+                buildTextFormField(profile.organization, "Organization Code", required: true),
                 ElevatedButton(
                     onPressed: (){
                       if (_profileKey.currentState.validate()){
@@ -81,15 +80,15 @@ class _ProfilePageState extends State<ProfilePage>{
         onChanged: (value){
           setState(() {
             if (labelText == "Contact Number"){
-              consumer.contactNumber = value;
+              profile.contactNumber = value;
             }else if(labelText == "Alternate Contact Number"){
-              consumer.alternateContactNumber = value;
+              profile.alternateContactNumber = value;
             }else if(labelText == "Door Number / Floor"){
-              consumer.doorNumber = value;
+              profile.doorNumber = value;
             }else if(labelText == "Address"){
-              consumer.address = value;
+              profile.address = value;
             }else if(labelText == "Organization Code"){
-              consumer.organization = value;
+              profile.organization = value;
             }
           });
         },
@@ -108,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage>{
   }
 
   update_consumer() async{
-    Map response = await API().put_consumer(consumer.toJson());
+    Map response = await API().put_profile(profile.toJson());
     print(response);
     if (response.containsKey("id")){
       ScaffoldMessenger.of(context).showSnackBar(
