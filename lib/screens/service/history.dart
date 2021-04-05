@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mithran/data/consumer.dart';
+import 'package:mithran/data/profile.dart';
 import 'package:mithran/data/service.dart';
 import 'package:mithran/data/service_status.dart';
 import 'package:mithran/data/service_type.dart';
@@ -20,8 +20,8 @@ class _ServiceHistoryState extends State<ServiceHistoryPage>{
   List service_status = [];
 
   get_services() async{
-    Consumer consumer = await Consumer.get_consumer_instance();
-    List services_temp = await API().get_services(consumer.id);
+    Profile profile = await Profile.get_profile_instance();
+    List services_temp = await API().get_services(profile.id);
     List types_temp = await API().get_service_types();
     List status_temp = await API().get_service_status();
     services_temp.forEach((element) {

@@ -1,12 +1,11 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:mithran/data/consumer.dart';
+import 'package:mithran/data/profile.dart';
 import 'package:mithran/data/service.dart';
 import 'package:mithran/data/service_type.dart';
 import 'package:mithran/tools/api.dart';
 import 'package:mithran/tools/screen_size.dart';
-import 'package:mithran/user.dart';
 import 'package:mithran/widgets/navigation_drawer.dart';
 
 class ServiceRequestPage extends StatefulWidget{
@@ -113,8 +112,8 @@ class _ServiceRequestState extends State<ServiceRequestPage>{
   }
 
   request_service() async{
-    Consumer consumer = await Consumer.get_consumer_instance();
-    service.requestedBy = consumer.id;
+    Profile profile = await Profile.get_profile_instance();
+    service.requestedBy = profile.id;
     Map response = await API().post_service(service.toJson());
     if (response.containsKey("id")){
       Navigator.popAndPushNamed(context, "/service/history");
