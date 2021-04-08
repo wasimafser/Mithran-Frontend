@@ -3,19 +3,20 @@ import 'package:mithran/data/profile.dart';
 import 'package:mithran/data/service.dart';
 import 'package:mithran/data/service_status.dart';
 import 'package:mithran/data/service_type.dart';
+import 'package:mithran/screens/service/details.dart';
 import 'package:mithran/tools/api.dart';
 import 'package:mithran/tools/screen_size.dart';
 import 'package:mithran/user.dart';
 import 'package:mithran/widgets/navigation_drawer.dart';
 
-class ServiceHistoryPage extends StatefulWidget{
+class AssignedServices extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
-    return _ServiceHistoryState();
+    return _AssignedServicesState();
   }
 }
 
-class _ServiceHistoryState extends State<ServiceHistoryPage>{
+class _AssignedServicesState extends State<AssignedServices>{
   List services = [];
   List service_types = [];
   List service_status = [];
@@ -68,27 +69,31 @@ class _ServiceHistoryState extends State<ServiceHistoryPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Request History"),
+        title: Text("Assigned Services"),
       ),
       drawer: NavigationDrawer(),
       body: Card(
         margin: ScreenSize.isSmallScreen(context) ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: 200, vertical: 20),
         child: ListView.separated(
-          separatorBuilder: (context, index){
-            return SizedBox(
-              height: 10,
-            );
-          },
-          itemCount: services.length,
-          itemBuilder: (context, index){
-            return ListTile(
-              contentPadding: EdgeInsets.all(10),
-              title: Text("Request ID : ${services[index].id.toString()}"),
-              subtitle: Text("Type : ${get_service_type(services[index].type)}"),
-              trailing: Text("Status : ${get_service_status(services[index].status)}"),
-              tileColor: Colors.grey,
-            );
-          }
+            separatorBuilder: (context, index){
+              return SizedBox(
+                height: 10,
+              );
+            },
+            itemCount: services.length,
+            itemBuilder: (context, index){
+              return ListTile(
+                contentPadding: EdgeInsets.all(10),
+                leading: Text(services[index].id.toString()),
+                title: Text("Requested By : ${services[index].requestedBy.user.fullName}"),
+                subtitle: Text("Type : ${get_service_type(services[index].type)}"),
+                trailing: Text("Status : ${get_service_status(services[index].status)}"),
+                tileColor: Colors.grey,
+                onTap: (){
+                  Navigator.popAndPushNamed(context, "/service/details", arguments: services[index]);
+                },
+              );
+            }
         ),
       ),
     );

@@ -5,8 +5,10 @@ import 'package:mithran/auth/auth.dart';
 import 'package:mithran/auth/login.dart';
 import 'package:mithran/screens/home_page.dart';
 import 'package:mithran/screens/profile.dart';
+import 'package:mithran/screens/service/details.dart';
 import 'package:mithran/screens/service/history.dart';
 import 'package:mithran/screens/service/request.dart';
+import 'package:mithran/screens/service/services.dart';
 import 'package:mithran/tools/local_data.dart';
 import 'package:mithran/tools/network.dart';
 import 'package:mithran/user.dart';
@@ -18,7 +20,7 @@ main() async{
   var token = await local_data.get_data('token', String);
   if (token != ""){
     var user_model = {};
-    List fields = ['id', 'full_name', 'first_name', 'last_name', 'email'];
+    List fields = ['id', 'full_name', 'first_name', 'last_name', 'email', 'type'];
     await fields.forEach((element) async{
       if (element == 'id'){
         user_model[element] = await local_data.get_data(element, int);
@@ -50,8 +52,20 @@ class MyApp extends StatelessWidget {
         "/login": (context) => LoginPage(),
         "/home": (context) => HomePage(),
         "/profile": (context) => ProfilePage(),
+        "/services": (context) => AssignedServices(),
         "/service/request": (context) => ServiceRequestPage(),
-        "/service/history": (context) => ServiceHistoryPage(),
+        "/service/history": (context) => ServiceHistoryPage()
+      },
+      onGenerateRoute: (settings){
+        switch (settings.name){
+          case '/service/details':
+            return MaterialPageRoute(
+                builder: (context) => ServiceDetails(service: settings.arguments),
+              settings: settings,
+            );
+          default:
+            return null;
+        }
       },
     );
   }

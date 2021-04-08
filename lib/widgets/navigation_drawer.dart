@@ -13,10 +13,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   
   get_user_info(){
     user = User.get_user_instance();
-    print(user.fullName);
-    // this.setState(() {
-    //
-    // });
+    this.setState(() {
+      user = user;
+    });
   }
   
   @override
@@ -29,49 +28,70 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-              child: Text(user.fullName),
-            decoration: BoxDecoration(
-              color: Colors.deepPurpleAccent,
+    if (user != null){
+      return Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              child: Text(user.fullName == null ? "" : user.fullName),
+              decoration: BoxDecoration(
+                color: Colors.deepPurpleAccent,
+              ),
             ),
-          ),
-          ListTile(
-            title: Text("Home"),
-            onTap: (){
-              Navigator.popAndPushNamed(context, "/home");
-            },
-          ),
-          ListTile(
-            title: Text("New Service Request"),
-            onTap: (){
-              Navigator.popAndPushNamed(context, "/service/request");
-            },
-          ),
-          ListTile(
-            title: Text("Request History"),
-            onTap: (){
-              Navigator.popAndPushNamed(context, "/service/history");
-            },
-          ),
-          ListTile(
-            title: Text("Profile"),
-            onTap: (){
-              Navigator.popAndPushNamed(context, "/profile");
-            },
-          ),
-          ListTile(
-            title: Text("Logout"),
-            onTap: (){
-              LocalData.clear_data();
-              Navigator.popAndPushNamed(context, "/auth");
-            },
-          )
-        ],
-      ),
-    );
+            ListTile(
+              title: Text("Home"),
+              onTap: (){
+                Navigator.popAndPushNamed(context, "/home");
+              },
+            ),
+            if (user.type == 'consumer')
+              ListTile(
+                title: Text("New Service Request"),
+                onTap: (){
+                  Navigator.popAndPushNamed(context, "/service/request");
+                },
+              ),
+            if (user.type == 'consumer')
+              ListTile(
+                title: Text("Request History"),
+                onTap: (){
+                  Navigator.popAndPushNamed(context, "/service/history");
+                },
+              ),
+            if (user.type == 'worker')
+              ListTile(
+                title: Text("Services"),
+                onTap: (){
+                  Navigator.popAndPushNamed(context, "/services");
+                },
+              ),
+            ListTile(
+              title: Text("Profile"),
+              onTap: (){
+                Navigator.popAndPushNamed(context, "/profile");
+              },
+            ),
+            ListTile(
+              title: Text("Logout"),
+              onTap: (){
+                LocalData.clear_data();
+                Navigator.popAndPushNamed(context, "/auth");
+              },
+            )
+          ],
+        ),
+      );
+    }else{
+      return Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+                child: Text("LOADING")
+            )
+          ],
+        ),
+      );
+    }
   }
 }

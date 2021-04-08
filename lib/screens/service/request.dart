@@ -113,15 +113,22 @@ class _ServiceRequestState extends State<ServiceRequestPage>{
 
   request_service() async{
     Profile profile = await Profile.get_profile_instance();
-    service.requestedBy = profile.id;
+    service.requestedBy = profile;
     Map response = await API().post_service(service.toJson());
+    print(response);
     if (response.containsKey("id")){
       Navigator.popAndPushNamed(context, "/service/history");
     }else{
       response.forEach((key, value) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(value), backgroundColor: Colors.red)
-        );
+        if (value.runtimeType != String){
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Unknown Error"), backgroundColor: Colors.red)
+          );
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(value), backgroundColor: Colors.red)
+          );
+        }
       });
     }
   }

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:mithran/tools/local_data.dart';
 
 var TOKEN;
-var ADMIN_TOKEN = "f31699f278390e23780ea10777fa4454ad11e9bc";
+var ADMIN_TOKEN = "0ef8292f0dd89ee11c23353f7c572106d4a05665";
 
 set_token_instance(token){
   TOKEN = token;

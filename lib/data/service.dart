@@ -4,22 +4,24 @@
 
 import 'dart:convert';
 
+import 'package:mithran/data/profile.dart';
+
 class Service {
   Service({
     this.id,
     this.assignedTo,
+    this.requestedBy,
     this.requestedOn,
     this.comments,
-    this.requestedBy,
     this.type,
     this.status,
   });
 
   int id;
-  AssignedTo assignedTo;
+  Profile assignedTo;
+  Profile requestedBy;
   DateTime requestedOn;
   String comments;
-  int requestedBy;
   int type;
   int status;
 
@@ -28,28 +30,28 @@ class Service {
   String toJson() => json.encode(toMap());
 
   factory Service.fromMap(Map<String, dynamic> json) => Service(
-    id: json["id"],
-    assignedTo: AssignedTo.fromMap(json["assigned_to"]),
-    requestedOn: DateTime.parse(json["requested_on"]),
-    comments: json["comments"],
-    requestedBy: json["requested_by"],
-    type: json["type"],
-    status: json["status"],
+    id: json["id"] == null ? null : json["id"],
+    assignedTo: json["assigned_to"] == null ? null : Profile.fromMap(json["assigned_to"]),
+    requestedBy: json["requested_by"] == null ? null : Profile.fromMap(json["requested_by"]),
+    requestedOn: json["requested_on"] == null ? null : DateTime.parse(json["requested_on"]),
+    comments: json["comments"] == null ? null : json["comments"],
+    type: json["type"] == null ? null : json["type"],
+    status: json["status"] == null ? null : json["status"],
   );
 
   Map<String, dynamic> toMap() => {
     "id": id == null ? null : id,
     "assigned_to": assignedTo == null ? null : assignedTo.toMap(),
+    "requested_by": requestedBy == null ? null : requestedBy.toMap(),
     "requested_on": requestedOn == null ? null : requestedOn.toIso8601String(),
-    "comments": comments,
-    "requested_by": requestedBy,
-    "type": type,
+    "comments": comments == null ? null : comments,
+    "type": type == null ? null : type,
     "status": status == null ? null : status,
   };
 }
 
-class AssignedTo {
-  AssignedTo({
+class _AssignedTo {
+  _AssignedTo({
     this.user,
     this.contactNumber,
   });
@@ -57,13 +59,13 @@ class AssignedTo {
   _User user;
   String contactNumber;
 
-  factory AssignedTo.fromJson(String str) => AssignedTo.fromMap(json.decode(str));
+  factory _AssignedTo.fromJson(String str) => _AssignedTo.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory AssignedTo.fromMap(Map<String, dynamic> json) => AssignedTo(
-    user: _User.fromMap(json["user"]),
-    contactNumber: json["contact_number"],
+  factory _AssignedTo.fromMap(Map<String, dynamic> json) => _AssignedTo(
+    user: json["user"] == null ? null : _User.fromMap(json["user"]),
+    contactNumber: json["contact_number"] == null ? null : json["contact_number"],
   );
 
   Map<String, dynamic> toMap() => {
@@ -84,7 +86,7 @@ class _User {
   String toJson() => json.encode(toMap());
 
   factory _User.fromMap(Map<String, dynamic> json) => _User(
-    fullName: json["full_name"],
+    fullName: json["full_name"] == null ? null : json["full_name"],
   );
 
   Map<String, dynamic> toMap() => {

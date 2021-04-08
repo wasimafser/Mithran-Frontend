@@ -63,9 +63,15 @@ class API {
     );
   }
 
-  get_services(consumer_id) async{
-    return await network_util.get(
-        "$base_url/service/filter/?requested_by=$consumer_id"
-    );
+  get_services(profile_id, type) async{
+    if (type == 'consumer'){
+      return await network_util.get(
+          "$base_url/service/filter/?requested_by=$profile_id"
+      );
+    }else if (type == 'worker'){
+      return await network_util.get(
+          "$base_url/service/filter/?assigned_to=$profile_id"
+      );
+    }
   }
 }

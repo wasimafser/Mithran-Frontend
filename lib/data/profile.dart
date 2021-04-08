@@ -27,7 +27,7 @@ class Profile {
   dynamic alternateContactNumber;
   String doorNumber;
   String address;
-  int user;
+  User user;
   List<dynamic> specializations;
 
   factory Profile.fromJson(String str) => Profile.fromMap(json.decode(str));
@@ -41,7 +41,7 @@ class Profile {
     alternateContactNumber: json["alternate_contact_number"],
     doorNumber: json["door_number"] == null ? null : json["door_number"],
     address: json["address"] == null ? null : json["address"],
-    user: json["user"] == null ? null : json["user"],
+    user: json["user"] == null ? null : User.fromMap(json["user"]),
     specializations: json["specializations"] == null ? null : List<dynamic>.from(json["specializations"].map((x) => x)),
   );
 
@@ -52,7 +52,7 @@ class Profile {
     "alternate_contact_number": alternateContactNumber,
     "door_number": doorNumber == null ? null : doorNumber,
     "address": address == null ? null : address,
-    "user": user == null ? null : user,
+    "user": user == null ? null : user.toMap(),
     "specializations": specializations == null ? null : List<dynamic>.from(specializations.map((x) => x)),
   };
 
