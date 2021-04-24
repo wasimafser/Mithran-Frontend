@@ -66,6 +66,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   Navigator.popAndPushNamed(context, "/services");
                 },
               ),
+            if (user.type == 'security')
+              ListTile(
+                title: Text("Add New Visitor"),
+                onTap: (){
+                  Navigator.popAndPushNamed(context, "/visitor/new");
+                },
+              ),
             ListTile(
               title: Text("Profile"),
               onTap: (){

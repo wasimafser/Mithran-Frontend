@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mithran/data/service.dart';
+import 'package:mithran/data/service_state.dart';
 import 'package:mithran/data/service_type.dart';
 import 'package:mithran/tools/api.dart';
 import 'package:mithran/tools/screen_size.dart';
@@ -26,6 +27,7 @@ class _ServiceDetailsState extends State<ServiceDetails>{
   });
 
   Service service;
+  ServiceState serviceState;
   List serviceTypes = [];
 
   get_service_types() async{
@@ -35,6 +37,13 @@ class _ServiceDetailsState extends State<ServiceDetails>{
     });
     setState(() {
       serviceTypes = serviceTypes;
+    });
+  }
+
+  get_service_state() async{
+    serviceState = await ServiceState.get_servicestate_instance(service.id);
+    setState(() {
+      serviceState=serviceState;
     });
   }
 
@@ -52,12 +61,13 @@ class _ServiceDetailsState extends State<ServiceDetails>{
     // TODO: implement initState
     super.initState();
     get_service_types();
+    get_service_state();
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    if (service != null){
+    if (service != null && serviceState != null){
       return Scaffold(
         appBar: AppBar(
           title: Text(service.id.toString()),
@@ -75,7 +85,37 @@ class _ServiceDetailsState extends State<ServiceDetails>{
                 buildListTile("Requested By", service.requestedBy.user.fullName),
                 buildListTile("Requestor Contact", service.requestedBy.contactNumber),
                 buildListTile("Requestor Address", service.requestedBy.address),
-                buildListTile("Comments", service.comments)
+                buildListTile("Comments", service.comments),
+                if (serviceState.consumerStarted && serviceState.workerStarted == false)
+                  ElevatedButton(
+                      onPressed: () async{
+                        if (serviceState.workerStarted){
+                          return;
+                        }
+                        serviceState.workerStarted = true;
+                        var response = await API().put_service_state(serviceState.toJson());
+                        serviceState = ServiceState.fromMap(response);
+                        setState(() {
+                          serviceState = serviceState;
+                        });
+                      },
+                      child: Text('Start')
+                  ),
+                if (serviceState.consumerStarted && serviceState.workerStarted && serviceState.consumerCompleted)
+                  ElevatedButton(
+                      onPressed: () async{
+                        if (serviceState.workerCompleted){
+                          return;
+                        }
+                        serviceState.workerCompleted = true;
+                        var response = await API().put_service_state(serviceState.toJson());
+                        serviceState = ServiceState.fromMap(response);
+                        setState(() {
+                          serviceState = serviceState;
+                        });
+                      },
+                      child: Text('Complete')
+                  ),
               ],
             )
           ],

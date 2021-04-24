@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mithran/data/profile.dart';
 import 'package:mithran/data/service.dart';
+import 'package:mithran/data/service_state.dart';
 import 'package:mithran/data/service_status.dart';
 import 'package:mithran/data/service_type.dart';
 import 'package:mithran/tools/api.dart';
@@ -19,14 +20,16 @@ class _ServiceHistoryState extends State<ServiceHistoryPage>{
   List services = [];
   List service_types = [];
   List service_status = [];
+  Map serviceStates = {};
+  User user = User.get_user_instance();
 
   get_services() async{
-    User user = User.get_user_instance();
     Profile profile = await Profile.get_profile_instance();
     List services_temp = await API().get_services(profile.id, user.type);
     List types_temp = await API().get_service_types();
     List status_temp = await API().get_service_status();
-    services_temp.forEach((element) {
+    services_temp.forEach((element) async{
+      serviceStates[element['id']] = await ServiceState.get_servicestate_instance(element['id']);
       services.add(Service.fromMap(element));
     });
     types_temp.forEach((element) {
@@ -39,6 +42,7 @@ class _ServiceHistoryState extends State<ServiceHistoryPage>{
       services = services;
       service_types = service_types;
       service_status = service_status;
+      serviceStates = serviceStates;
     });
   }
 
@@ -66,32 +70,75 @@ class _ServiceHistoryState extends State<ServiceHistoryPage>{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Request History"),
-      ),
-      drawer: NavigationDrawer(),
-      body: Card(
-        margin: ScreenSize.isSmallScreen(context) ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: 200, vertical: 20),
-        child: ListView.separated(
-          separatorBuilder: (context, index){
-            return SizedBox(
-              height: 10,
-            );
-          },
-          itemCount: services.length,
-          itemBuilder: (context, index){
-            return ListTile(
-              contentPadding: EdgeInsets.all(10),
-              title: Text("Request ID : ${services[index].id.toString()}"),
-              subtitle: Text("Type : ${get_service_type(services[index].type)}"),
-              trailing: Text("Status : ${get_service_status(services[index].status)}"),
-              tileColor: Colors.grey,
-            );
-          }
+    if (services != null){
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Request History"),
         ),
-      ),
-    );
+        drawer: NavigationDrawer(),
+        body: Card(
+          margin: ScreenSize.isSmallScreen(context) ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: 200, vertical: 20),
+          child: ListView.separated(
+              separatorBuilder: (context, index){
+                return SizedBox(
+                  height: 10,
+                );
+              },
+              itemCount: services.length,
+              itemBuilder: (context, index){
+                return ListTile(
+                  contentPadding: EdgeInsets.all(10),
+                  title: Text("Request ID : ${services[index].id.toString()}"),
+                  subtitle: Text("Type : ${get_service_type(services[index].type)}"),
+                  trailing: Flex(
+                    direction: Axis.vertical,
+                    children: [
+                      Text("Status : ${get_service_status(services[index].status)}"),
+                      if (get_service_status(services[index].status) == 'ASSIGNED')
+                        ElevatedButton(
+                          onPressed: () async{
+                            var service_state = serviceStates[services[index].id];
+                            if (service_state.consumerStarted){
+                              return;
+                            }
+                            service_state.consumerStarted = true;
+                            var response = await API().put_service_state(service_state.toJson());
+                            print(response);
+                            serviceStates[services[index].id] = ServiceState.fromMap(response);
+                            setState(() {
+                              serviceStates = serviceStates;
+                            });
+                          },
+                          child: Text("Approve Start"),
+                        ),
+                      if (get_service_status(services[index].status) == 'WORK IN PROGRESS')
+                        ElevatedButton(
+                          onPressed: () async{
+                            var service_state = serviceStates[services[index].id];
+                            if (service_state.consumerCompleted){
+                              return;
+                            }
+                            service_state.consumerCompleted = true;
+                            var response = await API().put_service_state(service_state.toJson());
+                            print(response);
+                            serviceStates[services[index].id] = ServiceState.fromMap(response);
+                            setState(() {
+                              serviceStates = serviceStates;
+                            });
+                          },
+                          child: Text("Approve Complete"),
+                        ),
+                    ],
+                  ),
+                  tileColor: Colors.grey,
+                );
+              }
+          ),
+        ),
+      );
+    }else{
+      return Text("LAODING");
+    }
   }
 
 }

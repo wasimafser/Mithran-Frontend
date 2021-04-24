@@ -9,6 +9,7 @@ import 'package:mithran/screens/service/details.dart';
 import 'package:mithran/screens/service/history.dart';
 import 'package:mithran/screens/service/request.dart';
 import 'package:mithran/screens/service/services.dart';
+import 'package:mithran/screens/visitor_management/new_visitor.dart';
 import 'package:mithran/tools/local_data.dart';
 import 'package:mithran/tools/network.dart';
 import 'package:mithran/user.dart';
@@ -54,7 +55,8 @@ class MyApp extends StatelessWidget {
         "/profile": (context) => ProfilePage(),
         "/services": (context) => AssignedServices(),
         "/service/request": (context) => ServiceRequestPage(),
-        "/service/history": (context) => ServiceHistoryPage()
+        "/service/history": (context) => ServiceHistoryPage(),
+        "/visitor/new": (context) => NewVisitorPage(),
       },
       onGenerateRoute: (settings){
         switch (settings.name){

@@ -5,6 +5,7 @@ import 'package:mithran/tools/network.dart';
 class API {
   final NetworkUtil network_util = NetworkUtil();
 
+  // String base_url = "https://waseemafser.pythonanywhere.com";
   String base_url = "http://127.0.0.1:8000";
 
   login(email, password) async{
@@ -28,6 +29,12 @@ class API {
           'type': 'consumer'
         }),
       require_admin: true,
+    );
+  }
+
+  filter_user(query) async{
+    return await network_util.get(
+      "$base_url/user_management/user/filter/?$query"
     );
   }
 
@@ -73,5 +80,25 @@ class API {
           "$base_url/service/filter/?assigned_to=$profile_id"
       );
     }
+  }
+
+  post_visitor(data) async{
+    return await network_util.post(
+        "$base_url/visitor_management/api/",
+        data
+    );
+  }
+
+  get_service_state(service_id) async{
+    return await network_util.get(
+      "$base_url/service/state/?service_id=$service_id"
+    );
+  }
+
+  put_service_state(data) async{
+    return await network_util.put(
+      "$base_url/service/state/",
+      data=data
+    );
   }
 }
