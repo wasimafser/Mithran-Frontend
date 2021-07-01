@@ -5,8 +5,8 @@ import 'package:mithran/tools/network.dart';
 class API {
   final NetworkUtil network_util = NetworkUtil();
 
-  // String base_url = "https://waseemafser.pythonanywhere.com";
-  String base_url = "http://127.0.0.1:8000";
+  String base_url = "https://waseemafser.pythonanywhere.com";
+  // String base_url = "http://127.0.0.1:8000";
 
   login(email, password) async{
     return await network_util.post(
