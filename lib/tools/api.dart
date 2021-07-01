@@ -101,4 +101,22 @@ class API {
       data=data
     );
   }
+
+  get_reports() async{
+    return await network_util.get(
+      "$base_url/service/reports/"
+    );
+  }
+
+  getUserReports(user_id) async{
+    return await network_util.get(
+        "$base_url/service/reports/user/$user_id/"
+    );
+  }
+
+  getServiceFeedback(service_id) async{
+    return await network_util.get(
+      "$base_url/service/feedback/$service_id/"
+    );
+  }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:mithran/data/profile.dart';
 import 'package:mithran/data/service.dart';
+import 'package:mithran/data/service_feedback.dart';
 import 'package:mithran/data/service_state.dart';
 import 'package:mithran/data/service_status.dart';
 import 'package:mithran/data/service_type.dart';
@@ -21,6 +23,7 @@ class _ServiceHistoryState extends State<ServiceHistoryPage>{
   List service_types = [];
   List service_status = [];
   Map serviceStates = {};
+  Map serviceFeedbacks = {};
   User user = User.get_user_instance();
 
   get_services() async{
@@ -31,6 +34,15 @@ class _ServiceHistoryState extends State<ServiceHistoryPage>{
     services_temp.forEach((element) async{
       serviceStates[element['id']] = await ServiceState.get_servicestate_instance(element['id']);
       services.add(Service.fromMap(element));
+
+      // var feedback = await API().getServiceFeedback(element['id']);
+      // if (feedback.length > 0){
+      //   serviceFeedbacks[element['id']] = ServiceFeedback.fromMap(feedback[0]);
+      // }else{
+      //   serviceFeedbacks[element['id']] = ServiceFeedback.fromMap({
+      //     'rating': 0
+      //   });
+      // }
     });
     types_temp.forEach((element) {
       service_types.add(ServiceType.fromMap(element));
@@ -43,6 +55,7 @@ class _ServiceHistoryState extends State<ServiceHistoryPage>{
       service_types = service_types;
       service_status = service_status;
       serviceStates = serviceStates;
+      serviceFeedbacks = serviceFeedbacks;
     });
   }
 

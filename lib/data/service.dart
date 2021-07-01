@@ -13,6 +13,10 @@ class Service {
     this.requestedBy,
     this.requestedOn,
     this.comments,
+    this.assignedOn,
+    this.startedOn,
+    this.completedOn,
+    this.totalWorkTime,
     this.type,
     this.status,
   });
@@ -22,6 +26,10 @@ class Service {
   Profile requestedBy;
   DateTime requestedOn;
   String comments;
+  DateTime assignedOn;
+  DateTime startedOn;
+  DateTime completedOn;
+  String totalWorkTime;
   int type;
   int status;
 
@@ -35,6 +43,10 @@ class Service {
     requestedBy: json["requested_by"] == null ? null : Profile.fromMap(json["requested_by"]),
     requestedOn: json["requested_on"] == null ? null : DateTime.parse(json["requested_on"]),
     comments: json["comments"] == null ? null : json["comments"],
+    assignedOn: json["assigned_on"] == null ? null : DateTime.parse(json["assigned_on"]),
+    startedOn: json["started_on"] == null ? null : DateTime.parse(json["started_on"]),
+    completedOn: json["completed_on"] == null ? null : DateTime.parse(json["completed_on"]),
+    totalWorkTime: json["total_work_time"] == null ? null : json["total_work_time"],
     type: json["type"] == null ? null : json["type"],
     status: json["status"] == null ? null : json["status"],
   );
@@ -45,6 +57,10 @@ class Service {
     "requested_by": requestedBy == null ? null : requestedBy.toMap(),
     "requested_on": requestedOn == null ? null : requestedOn.toIso8601String(),
     "comments": comments == null ? null : comments,
+    "assigned_on": assignedOn == null ? null : assignedOn.toIso8601String(),
+    "started_on": startedOn == null ? null : startedOn.toIso8601String(),
+    "completed_on": completedOn == null ? null : completedOn.toIso8601String(),
+    "total_work_time": totalWorkTime == null ? null : totalWorkTime,
     "type": type == null ? null : type,
     "status": status == null ? null : status,
   };
